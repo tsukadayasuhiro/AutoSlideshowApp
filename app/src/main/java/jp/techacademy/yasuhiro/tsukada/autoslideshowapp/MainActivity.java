@@ -110,14 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } while (cursor.moveToNext());
         }
         cursor.close();
-        if (cursor.moveToFirst()) {
-            do {
-                int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
-                Long id = cursor.getLong(fieldIndex);
-                Uri imageUri1 = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
+
 
 
 
