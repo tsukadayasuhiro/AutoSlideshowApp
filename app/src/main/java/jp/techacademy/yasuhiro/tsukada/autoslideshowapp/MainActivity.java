@@ -68,25 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
-        ContentResolver resolver = getContentResolver();
-        Cursor cursor = resolver.query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null,
-                null,
-                null,
-                null
-        );
-        cursor_ = cursor;
-        cursor_.moveToFirst();
 
-        if (cursor.moveToFirst()) {
-            do {
-                int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
-                Long id = cursor.getLong(fieldIndex);
-                Uri imageUri1 = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
 
    }
 
@@ -117,7 +99,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 null,
                 null
         );
+        cursor_ = cursor;
+        cursor_.moveToFirst();
 
+        if (cursor.moveToFirst()) {
+            do {
+                int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+                Long id = cursor.getLong(fieldIndex);
+                Uri imageUri1 = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
         if (cursor.moveToFirst()) {
             do {
                 int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
