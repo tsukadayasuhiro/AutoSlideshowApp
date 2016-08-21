@@ -40,14 +40,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ContentResolver resolver = getContentResolver();
-        Cursor cursor = resolver.query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null,
-                null,
-                null,
-                null
-        );
 
 
         button1 = (Button) findViewById(R.id.button1);
@@ -57,9 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button2.setOnClickListener(this);
         button3.setOnClickListener(this);
 
-        cursor_ = cursor;
-        cursor_.moveToFirst();
+
 //このcursor_.moveToFirst();は、カーソルの位置が最初にありますよという宣言みたいなもの。
+
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -75,7 +68,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
-    }
+        ContentResolver resolver = getContentResolver();
+        Cursor cursor = resolver.query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null,
+                null,
+                null,
+                null
+        );
+        cursor_ = cursor;
+        cursor_.moveToFirst();
+
+        if (cursor.moveToFirst()) {
+            do {
+                int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+                Long id = cursor.getLong(fieldIndex);
+                Uri imageUri1 = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+   }
 
 
 
@@ -96,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getContentsInfo() {
 
-
         ContentResolver resolver = getContentResolver();
         Cursor cursor = resolver.query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -116,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cursor.close();
 
 
+
     }
 
     public void onClick(View v) {
@@ -132,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //if (!cursor_.moveToNext()) {
             //cursor_.moveToFirst();
             // }
-            // がtrueの時は処理がfalseになるので、何もしないという判定になり
+            // がtrueの時は処理がfalseになるので、何もしないという判定になり,
             //!cursor_.moveToNext()が実行される。
             //次にいけない。つまりfalseの時は、trueになり cursor_.moveToFirst()が実行され
             //最初にcursorが動くというもの。
